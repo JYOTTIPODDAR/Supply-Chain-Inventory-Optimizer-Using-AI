@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+<title>Supply Chain AI</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<div class="sidebar">
+
+<h2>SupplyChain AI</h2>
+
+<ul>
+
+<li><a href="/dashboard">Dashboard</a></li>
+
+<li><a href="/logout">Logout</a></li>
+
+</ul>
+
+</div>
+
+
+<div class="main">
+
+{% block content %}
+
+{% endblock %}
+
+</div>
+
+</body>
+
+</html>

@@ -1,88 +1,161 @@
 import pickle
-from flask import Flask, render_template, request
+import numpy as np
+from flask import Flask, render_template, request, redirect, session
+import sqlite3
 
-# -------- CREATE FLASK APP --------
-app = Flask(
-    __name__,
-    template_folder="templates",
-    static_folder="static"
-)
+app = Flask(__name__)
+app.secret_key = "secret123"
 
-# -------- LOAD MODEL SAFELY --------
-try:
-    with open("model/demand_model.pkl", "rb") as f:
-        model = pickle.load(f)
-except Exception as e:
-    print("Error loading model:", e)
-    model = None
+# ---------------------------
+# Load ML Model
+# ---------------------------
+model = pickle.load(open("model/demand_model.pkl", "rb"))
 
 
-# -------- HOME PAGE --------
-@app.route("/")
-def home():
+# ---------------------------
+# Database Initialization
+# ---------------------------
+def init_db():
+
+    conn = sqlite3.connect("database.db")
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS users(
+        name TEXT,
+        email TEXT PRIMARY KEY,
+        password TEXT
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+# Run database initialization
+init_db()
+
+
+# ---------------------------
+# Database Connection
+# ---------------------------
+def get_db():
+    conn = sqlite3.connect("database.db")
+    return conn
+
+
+# ---------------------------
+# Login Page
+# ---------------------------
+@app.route("/", methods=["GET", "POST"])
+def login():
+
+    if request.method == "POST":
+
+        email = request.form["email"]
+        password = request.form["password"]
+
+        conn = get_db()
+        cursor = conn.cursor()
+
+        cursor.execute(
+            "SELECT * FROM users WHERE email=? AND password=?",
+            (email, password)
+        )
+
+        user = cursor.fetchone()
+
+        if user:
+            session["user"] = email
+            return redirect("/dashboard")
+
+        else:
+            return render_template("login.html", error="Invalid Credentials")
+
+    return render_template("login.html")
+
+
+# ---------------------------
+# Signup Page
+# ---------------------------
+@app.route("/signup", methods=["GET", "POST"])
+def signup():
+
+    if request.method == "POST":
+
+        name = request.form["name"]
+        email = request.form["email"]
+        password = request.form["password"]
+
+        conn = get_db()
+        cursor = conn.cursor()
+
+        try:
+
+            cursor.execute(
+                "INSERT INTO users VALUES (?,?,?)",
+                (name, email, password)
+            )
+
+            conn.commit()
+
+            return redirect("/")
+
+        except:
+            return render_template("signup.html", error="User already exists")
+
+    return render_template("signup.html")
+
+
+# ---------------------------
+# Dashboard
+# ---------------------------
+@app.route("/dashboard")
+def dashboard():
+
+    if "user" not in session:
+        return redirect("/")
+
+    return render_template("dashboard.html")
+
+
+# ---------------------------
+# Prediction Route
+# ---------------------------
+@app.route("/predict", methods=["POST"])
+def predict():
+
+    if "user" not in session:
+        return redirect("/")
+
+    store = int(request.form["store"])
+    item = int(request.form["item"])
+    sales = int(request.form["sales"])
+    promo = int(request.form["promo"])
+
+    features = np.array([[store, item, sales, promo]])
+
+    prediction = model.predict(features)
+
     return render_template(
-        "index.html",
-        demand="--",
-        stock="--",
-        reorder="--"
+        "dashboard.html",
+        prediction=int(prediction[0])
     )
 
 
-# -------- CHECK INVENTORY --------
-@app.route("/check", methods=["POST"])
-def check_inventory():
+# ---------------------------
+# Logout
+# ---------------------------
+@app.route("/logout")
+def logout():
 
-    # Handle user input safely
-    try:
-        current_stock = int(request.form["stock"])
-    except ValueError:
-        return render_template(
-            "index.html",
-            demand="Invalid Input",
-            stock="Invalid Input",
-            reorder="Enter numeric value"
-        )
+    session.pop("user", None)
 
-    # Features used by ML model
-    base_features = [
-        current_stock,
-        60,
-        55.0,
-        120.0,
-        10,
-        1,
-        115.0,
-        15,
-        6,
-        2024
-    ]
-
-    remaining_features = [0] * (model.n_features_in_ - len(base_features))
-    final_input = base_features + remaining_features
-
-    # Prediction
-    try:
-        predicted_demand = model.predict([final_input])[0]
-    except Exception as e:
-        return render_template(
-            "index.html",
-            demand="Prediction Error",
-            stock=current_stock,
-            reorder="Model issue"
-        )
-
-    # Reorder logic
-    reorder_point = 600
-    reorder_status = "YES" if current_stock < reorder_point else "NO"
-
-    return render_template(
-        "index.html",
-        demand=round(predicted_demand, 2),
-        stock=current_stock,
-        reorder=reorder_status
-    )
+    return redirect("/")
 
 
-# -------- RUN APP --------
+# ---------------------------
+# Run App
+# ---------------------------
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8000, debug=True)
+    app.run(debug=True)

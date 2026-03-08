@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Demand Prediction</h2>
+
+<form action="/predict" method="POST">
+
+Store ID
+
+<input type="number" name="store" required>
+
+<br><br>
+
+Item ID
+
+<input type="number" name="item" required>
+
+<br><br>
+
+Sales
+
+<input type="number" name="sales" required>
+
+<br><br>
+
+Promotion
+
+<input type="number" name="promo" required>
+
+<br><br>
+
+<button type="submit">Predict</button>
+
+</form>
+
+
+{% if prediction %}
+
+<h3>Predicted Demand: {{ prediction }}</h3>
+
+{% endif %}
+
+{% endblock %}

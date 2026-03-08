@@ -1,97 +1,25 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Segoe UI", sans-serif;
+body{
+font-family: Arial;
+margin:0;
 }
 
-body {
-    background: linear-gradient(135deg, #000000, #0a0f2c);
-    color: white;
-    min-height: 100vh;
+.sidebar{
+width:200px;
+height:100vh;
+background:#2c3e50;
+color:white;
+position:fixed;
+padding:20px;
 }
 
-.navbar {
-    background: linear-gradient(90deg, #0f2027, #203a43, #2c5364);
-    padding: 20px;
-    text-align: center;
-    border-bottom: 2px solid #ff2f92;
+.sidebar a{
+color:white;
+text-decoration:none;
+display:block;
+margin:10px 0;
 }
 
-.navbar h1 {
-    color: #4fc3f7;
-}
-
-.form-box {
-    text-align: center;
-    margin-top: 30px;
-}
-
-.form-box input {
-    padding: 10px;
-    width: 220px;
-    border-radius: 8px;
-    border: none;
-    margin-right: 10px;
-}
-
-.form-box button {
-    padding: 10px 20px;
-    border-radius: 8px;
-    border: none;
-    background: linear-gradient(135deg, #ff0844, #ff2f92);
-    color: white;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.container {
-    display: flex;
-    justify-content: space-around;
-    margin-top: 50px;
-}
-
-.card {
-    width: 280px;
-    height: 180px;
-    border-radius: 15px;
-    padding: 25px;
-    text-align: center;
-    box-shadow: 0 0 20px rgba(255, 47, 146, 0.3);
-    transition: transform 0.3s;
-}
-
-.card:hover {
-    transform: scale(1.05);
-}
-
-.blue {
-    background: linear-gradient(135deg, #1e3c72, #2a5298);
-}
-
-.dark {
-    background: linear-gradient(135deg, #232526, #414345);
-}
-
-.red {
-    background: linear-gradient(135deg, #ff0844, #ff2f92);
-}
-
-.card h3 {
-    margin-bottom: 20px;
-}
-
-.card p {
-    font-size: 32px;
-    font-weight: bold;
-}
-
-.footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    padding: 10px;
-    background: black;
-    color: #ff2f92;
+.main{
+margin-left:220px;
+padding:20px;
 }
