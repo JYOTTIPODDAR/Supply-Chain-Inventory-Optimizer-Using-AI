@@ -1,28 +1,50 @@
-📦 Supply Chain Inventory Optimizer Using AI
+📦 AI Supply Chain Inventory Optimizer
 
-An AI-powered web application that predicts product demand and helps businesses optimize inventory decisions to reduce overstock and stockouts.
+An AI-powered Supply Chain Inventory Optimization System that predicts product demand and helps businesses make smarter inventory decisions.
 
-This project combines Machine Learning + Flask Web Development to build a practical real-world supply chain optimization system.
+This project combines Machine Learning + Flask Web Development + Interactive Dashboard UI to build a practical real-world supply chain optimization system.
 
 🚀 Project Overview
 
-Efficient inventory management is crucial for supply chain operations. Overstocking increases holding costs, while understocking leads to lost sales.
+Efficient inventory management is critical in supply chain operations.
 
-This system:
+Poor inventory planning leads to:
 
-Predicts future demand using a trained ML model
+📉 Stockouts → Lost sales
 
-Compares predicted demand with current stock
+📦 Overstocking → High storage cost
 
-Suggests whether inventory should be reordered
+This system solves the problem by:
 
-Provides results through a simple Flask-based web interface
+✔ Predicting future demand using Machine Learning
+✔ Comparing predicted demand with current inventory
+✔ Recommending whether stock should be reordered
+✔ Providing results through a Flask-based interactive dashboard
+
+🧠 Key Features
+
+🤖 Demand Forecasting using Machine Learning
+
+📊 Interactive Inventory Dashboard
+
+🔐 User Authentication (Login & Register)
+
+📦 Reorder Decision System
+
+🎨 Modern UI Dashboard
+
+💾 SQLite Database Integration
 
 🛠️ Tech Stack
+Backend
 
 Python
 
 Flask
+
+SQLite
+
+Machine Learning
 
 Scikit-learn
 
@@ -30,93 +52,165 @@ Pandas
 
 NumPy
 
-HTML/CSS
+Frontend
+
+HTML
+
+CSS
+
+JavaScript
+
+Development Tools
+
+Git
+
+GitHub
+
+VS Code
+
+Jupyter Notebook
 
 📂 Project Structure
-Supply-Chain-Inventory-Optimizer-Using-AI/
+Supply-Chain-Inventory-Optimizer-Using-AI
 │
-├── data/                 # Dataset used for training
-├── model/                # Trained ML model (.pkl file)
-├── notebooks/            # Model training & experimentation
-├── static/               # CSS and frontend assets
-├── templates/            # HTML files for Flask
+├── data/
+│   └── retail_store_inventory.csv
 │
-├── app.py                # Main Flask application
-├── requirements.txt      # Project dependencies
-└── README.md             # Project documentation
-🧠 How It Works
+├── model/
+│   └── demand_model.pkl
+│
+├── notebooks/
+│   └── model_training.ipynb
+│
+├── database/
+│   └── database.db
+│
+├── static/
+│   ├── style.css
+│   └── script.js
+│
+├── templates/
+│   ├── base.html
+│   ├── login.html
+│   ├── register.html
+│   ├── dashboard.html
+│
+├── app.py
+├── create_db.py
+├── requirements.txt
+└── README.md
+⚙️ Installation & Setup
+1️⃣ Clone the Repository
+git clone https://github.com/JYOTTIPODDAR/Supply-Chain-Inventory-Optimizer-Using-AI.git
+cd Supply-Chain-Inventory-Optimizer-Using-AI
+2️⃣ Create Virtual Environment
+python -m venv venv
 
-User enters current inventory details in the web form.
+Activate:
 
-The Flask app loads the trained machine learning model.
+Windows
 
-The model predicts future demand.
+venv\Scripts\activate
+3️⃣ Install Dependencies
+pip install -r requirements.txt
+4️⃣ Create Database
+python create_db.py
+5️⃣ Run the Application
+python app.py
 
-The system compares:
+Open browser:
+
+http://127.0.0.1:5000
+📊 How the System Works
+
+1️⃣ User logs into the system
+2️⃣ User enters current inventory stock
+3️⃣ Machine Learning model predicts future demand
+4️⃣ System compares:
 
 Current Stock
 
 Predicted Demand
 
-Based on a reorder threshold, the system suggests:
+5️⃣ System provides reorder decision
 
-✅ Reorder Required
+Example Output:
 
-❌ No Reorder Needed
+Predicted Demand : 820
+Current Stock : 500
+Reorder Status : YES
+📈 Machine Learning Model
 
-⚙️ Installation & Setup
-1️⃣ Clone the Repository
-git clone https://github.com/JYOTTIPODDAR/Supply-Chain-Inventory-Optimizer-Using-AI.git
-cd Supply-Chain-Inventory-Optimizer-Using-AI
-2️⃣ Create Virtual Environment (Recommended)
-python -m venv venv
-venv\Scripts\activate   # Windows
-3️⃣ Install Dependencies
-pip install -r requirements.txt
-4️⃣ Run the Application
-python app.py
+The demand prediction model is trained using historical retail inventory data.
 
-Then open your browser and go to:
-
-http://127.0.0.1:8000
-📊 Model Details
-
-The model is trained using historical inventory and demand data.
-
-It uses supervised learning (Scikit-learn).
-
-The trained model is stored as a .pkl file and loaded inside app.py.
-
-Feature inputs include:
+Input Features include:
 
 Current stock
 
 Units ordered
 
-Price
+Product price
 
 Discount
 
 Competitor pricing
 
-Date features
+Time-based features
 
-🎯 Key Features
+Model Output:
 
-✔ Demand Forecasting
-✔ Inventory Optimization
-✔ Reorder Decision Logic
-✔ Clean Flask Web Interface
-✔ Real-world Supply Chain Use Case
+Predicted Future Demand
+
+The trained model is saved as:
+
+model/demand_model.pkl
+🔐 Authentication System
+
+The system includes user authentication:
+
+User Registration
+
+Login System
+
+Session Management
+
+Secure Dashboard Access
+
+🎨 UI Dashboard
+
+The system provides an interactive dashboard displaying:
+
+Predicted demand
+
+Current inventory
+
+Reorder recommendation
+
+Future improvements include:
+
+📊 Demand trend graphs
+
+📦 Inventory analytics
+
+📈 Forecast visualization
 
 📌 Future Improvements
 
-Add real-time dashboard visualization
+Add Chart.js analytics dashboard
 
-Deploy on cloud (Render / AWS / Azure)
+Implement EOQ inventory optimization
 
-Add advanced models (XGBoost / LSTM)
+Add supplier recommendation system
 
-Add database integration (PostgreSQL)
+Deploy on cloud platforms (AWS / Render / Azure)
 
-Add authentication system for multiple users
+👩‍💻 Author
+
+Jyoti kumari
+Aryan kumar
+
+B.Tech Computer Science (AI & ML)
+Aspiring AI Engineer
+
+GitHub:
+https://github.com/JYOTTIPODDAR
