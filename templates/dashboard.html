@@ -20,32 +20,83 @@
 
 </div>
 
+
 <div class="container">
 
 <div class="card blue">
 
 <h3>Predicted Demand</h3>
-
 <p>{{ demand }}</p>
 
 </div>
 
+
 <div class="card dark">
 
 <h3>Current Stock</h3>
-
 <p>{{ stock }}</p>
 
 </div>
 
+
 <div class="card red">
 
 <h3>Reorder Status</h3>
-
 <p>{{ reorder }}</p>
 
 </div>
 
 </div>
+
+
+<h2 style="text-align:center; margin-top:40px;">Inventory Analysis</h2>
+
+<canvas id="inventoryChart" style="max-width:600px; margin:auto;"></canvas>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const stockValue = JSON.parse('{{ stock | default(0) | tojson }}');
+const demandValue = JSON.parse('{{ demand | default(0) | tojson }}');
+
+const ctx = document.getElementById('inventoryChart');
+
+new Chart(ctx, {
+
+type: 'bar',
+
+data: {
+
+labels: ['Current Stock','Predicted Demand'],
+
+datasets: [{
+
+label: 'Inventory Data',
+
+data: [stockValue, demandValue],
+
+backgroundColor: ['#3498db','#e74c3c']
+
+}]
+
+},
+
+options: {
+
+responsive: true,
+
+plugins: {
+
+legend: { display: false }
+
+}
+
+}
+
+});
+
+</script>
 
 {% endblock %}

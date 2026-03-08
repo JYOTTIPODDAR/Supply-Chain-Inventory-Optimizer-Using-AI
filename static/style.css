@@ -1,70 +1,118 @@
 body{
-
 background:linear-gradient(120deg,#2c3e50,#4ca1af);
 font-family:Arial;
 color:white;
-
+margin:0;
 }
+
+
+/* NAVBAR */
 
 .navbar{
-
 display:flex;
 justify-content:space-between;
+align-items:center;
 padding:20px;
 background:#111;
-
 }
 
-.login-box{
+.nav-links a{
+color:white;
+margin-left:20px;
+text-decoration:none;
+font-weight:bold;
+}
 
+
+/* MAIN */
+
+.main{
+padding:40px;
+text-align:center;
+}
+
+
+/* FORM */
+
+.form-box{
+margin:auto;
 width:300px;
-margin:100px auto;
-padding:30px;
+padding:20px;
 background:#1e1e1e;
 border-radius:10px;
-text-align:center;
-
 }
 
-input{
 
-width:100%;
+/* INPUT */
+
+input{
+width:90%;
 padding:10px;
 margin:10px;
 border:none;
 border-radius:5px;
-
 }
 
-button{
 
+/* BUTTON */
+
+button{
 padding:10px 20px;
 background:#ff4b2b;
 border:none;
 color:white;
 border-radius:5px;
 cursor:pointer;
-
 }
 
-.container{
+button:hover{
+background:#ff2a00;
+}
 
+
+/* DASHBOARD CARDS */
+
+.container{
 display:flex;
 justify-content:center;
 gap:40px;
 margin-top:40px;
-
+flex-wrap:wrap;
 }
 
 .card{
-
 padding:30px;
 width:200px;
 border-radius:10px;
 text-align:center;
+transition:0.3s;
+}
 
+.card:hover{
+transform:scale(1.08);
 }
 
 .blue{background:#3498db;}
 .dark{background:#34495e;}
 .red{background:#e74c3c;}
+
+
+/* ERROR */
+
+.error{
+color:#ff4b4b;
+margin-top:10px;
+}
+
+
+/* CHART */
+
+.chart-title{
+margin-top:50px;
+}
+
+#inventoryChart{
+max-width:600px;
+margin:auto;
+margin-top:20px;
+}
