@@ -1,49 +1,97 @@
 import pickle
-from flask import Flask, render_template, request
+import sqlite3
+from flask import Flask, render_template, request, redirect, session
 
-# -------- CREATE FLASK APP --------
-app = Flask(
-    __name__,
-    template_folder="templates",
-    static_folder="static"
-)
-
-# -------- LOAD MODEL SAFELY --------
-try:
-    with open("model/demand_model.pkl", "rb") as f:
-        model = pickle.load(f)
-except Exception as e:
-    print("Error loading model:", e)
-    model = None
+app = Flask(__name__)
+app.secret_key = "inventory_secret_key"
 
 
-# -------- HOME PAGE --------
+# LOAD MODEL
+with open("model/demand_model.pkl", "rb") as f:
+    model = pickle.load(f)
+
+
+# DATABASE CONNECTION
+def get_db():
+    conn = sqlite3.connect("database/database.db")
+    conn.row_factory = sqlite3.Row
+    return conn
+
+
+# HOME
 @app.route("/")
 def home():
-    return render_template(
-        "index.html",
-        demand="--",
-        stock="--",
-        reorder="--"
-    )
+    return redirect("/login")
 
 
-# -------- CHECK INVENTORY --------
-@app.route("/check", methods=["POST"])
-def check_inventory():
+# REGISTER
+@app.route("/register", methods=["GET","POST"])
+def register():
 
-    # Handle user input safely
-    try:
-        current_stock = int(request.form["stock"])
-    except ValueError:
-        return render_template(
-            "index.html",
-            demand="Invalid Input",
-            stock="Invalid Input",
-            reorder="Enter numeric value"
+    if request.method == "POST":
+
+        name = request.form["name"]
+        email = request.form["email"]
+        password = request.form["password"]
+
+        conn = get_db()
+
+        conn.execute(
+            "INSERT INTO users(name,email,password) VALUES (?,?,?)",
+            (name,email,password)
         )
 
-    # Features used by ML model
+        conn.commit()
+
+        return redirect("/login")
+
+    return render_template("register.html")
+
+
+# LOGIN
+@app.route("/login", methods=["GET","POST"])
+def login():
+
+    if request.method == "POST":
+
+        email = request.form["email"]
+        password = request.form["password"]
+
+        conn = get_db()
+
+        user = conn.execute(
+            "SELECT * FROM users WHERE email=? AND password=?",
+            (email,password)
+        ).fetchone()
+
+        if user:
+
+            session["user_id"] = user["id"]
+
+            return redirect("/dashboard")
+
+    return render_template("login.html")
+
+
+# DASHBOARD
+@app.route("/dashboard")
+def dashboard():
+
+    if "user_id" not in session:
+        return redirect("/login")
+
+    return render_template("dashboard.html",
+                           demand="--",
+                           stock="--",
+                           reorder="--")
+
+
+# INVENTORY CHECK
+@app.route("/predict", methods=["POST"])
+def predict():
+
+    current_stock = int(request.form["stock"])
+
     base_features = [
         current_stock,
         60,
@@ -57,32 +105,28 @@ def check_inventory():
         2024
     ]
 
-    remaining_features = [0] * (model.n_features_in_ - len(base_features))
-    final_input = base_features + remaining_features
+    remaining = [0]*(model.n_features_in_ - len(base_features))
 
-    # Prediction
-    try:
-        predicted_demand = model.predict([final_input])[0]
-    except Exception as e:
-        return render_template(
-            "index.html",
-            demand="Prediction Error",
-            stock=current_stock,
-            reorder="Model issue"
-        )
+    final_input = base_features + remaining
 
-    # Reorder logic
+    prediction = model.predict([final_input])[0]
+
     reorder_point = 600
-    reorder_status = "YES" if current_stock < reorder_point else "NO"
 
-    return render_template(
-        "index.html",
-        demand=round(predicted_demand, 2),
-        stock=current_stock,
-        reorder=reorder_status
-    )
+    reorder = "YES" if current_stock < reorder_point else "NO"
+
+    return render_template("dashboard.html",
+                           demand=round(prediction,2),
+                           stock=current_stock,
+                           reorder=reorder)
 
 
-# -------- RUN APP --------
+# LOGOUT
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
+
+
 if __name__ == "__main__":
-    app.run(host="127.0.0.1", port=8000, debug=True)
+    app.run(debug=True)

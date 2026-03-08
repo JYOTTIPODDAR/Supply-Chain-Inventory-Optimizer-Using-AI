@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="form-box">
+
+<form method="POST" action="/predict">
+
+<input type="number" name="stock" placeholder="Enter Current Stock">
+
+<button>Predict</button>
+
+</form>
+
+</div>
+
+<div class="container">
+
+<div class="card blue">
+
+<h3>Predicted Demand</h3>
+
+<p>{{ demand }}</p>
+
+</div>
+
+<div class="card dark">
+
+<h3>Current Stock</h3>
+
+<p>{{ stock }}</p>
+
+</div>
+
+<div class="card red">
+
+<h3>Reorder Status</h3>
+
+<p>{{ reorder }}</p>
+
+</div>
+
+</div>
+
+{% endblock %}
