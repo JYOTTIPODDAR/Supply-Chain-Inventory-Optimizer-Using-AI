@@ -1,17 +1,23 @@
 import pickle
 from flask import Flask, render_template, request
 
+# -------- CREATE FLASK APP --------
 app = Flask(
     __name__,
     template_folder="templates",
     static_folder="static"
 )
 
-# Load trained ML model
-with open("model/demand_model.pkl", "rb") as f:
-    model = pickle.load(f)
+# -------- LOAD MODEL SAFELY --------
+try:
+    with open("model/demand_model.pkl", "rb") as f:
+        model = pickle.load(f)
+except Exception as e:
+    print("Error loading model:", e)
+    model = None
 
-# ---------------- HOME PAGE ----------------
+
+# -------- HOME PAGE --------
 @app.route("/")
 def home():
     return render_template(
@@ -21,31 +27,51 @@ def home():
         reorder="--"
     )
 
-# ---------------- CHECK INVENTORY ----------------
+
+# -------- CHECK INVENTORY --------
 @app.route("/check", methods=["POST"])
 def check_inventory():
 
-    current_stock = int(request.form["stock"])
+    # Handle user input safely
+    try:
+        current_stock = int(request.form["stock"])
+    except ValueError:
+        return render_template(
+            "index.html",
+            demand="Invalid Input",
+            stock="Invalid Input",
+            reorder="Enter numeric value"
+        )
 
-    # Base features (same order as training)
+    # Features used by ML model
     base_features = [
-        current_stock,   # Inventory Level
-        60,              # Units Ordered
-        55.0,            # Demand Forecast
-        120.0,           # Price
-        10,              # Discount
-        1,               # Holiday / Promotion
-        115.0,           # Competitor Pricing
-        15,              # Day
-        6,               # Month
-        2024             # Year
+        current_stock,
+        60,
+        55.0,
+        120.0,
+        10,
+        1,
+        115.0,
+        15,
+        6,
+        2024
     ]
 
     remaining_features = [0] * (model.n_features_in_ - len(base_features))
     final_input = base_features + remaining_features
 
-    predicted_demand = model.predict([final_input])[0]
+    # Prediction
+    try:
+        predicted_demand = model.predict([final_input])[0]
+    except Exception as e:
+        return render_template(
+            "index.html",
+            demand="Prediction Error",
+            stock=current_stock,
+            reorder="Model issue"
+        )
 
+    # Reorder logic
     reorder_point = 600
     reorder_status = "YES" if current_stock < reorder_point else "NO"
 
@@ -56,6 +82,7 @@ def check_inventory():
         reorder=reorder_status
     )
 
-# ---------------- RUN APP ----------------
+
+# -------- RUN APP --------
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=8000, debug=True)
