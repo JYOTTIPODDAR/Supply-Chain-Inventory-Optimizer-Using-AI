@@ -6,17 +6,23 @@
 
 <h2>Create Account</h2>
 
+{% if error %}
+<p style="color:red; text-align:center;">{{ error }}</p>
+{% endif %}
+
 <form method="POST">
 
-<input name="name" placeholder="Name">
+<input name="name" placeholder="Name" required>
 
-<input name="email" placeholder="Email">
+<input name="email" type="email" placeholder="Email" required>
 
-<input name="password" type="password" placeholder="Password">
+<input name="password" type="password" placeholder="Password" required>
 
-<button>Register</button>
+<button type="submit">Register</button>
 
 </form>
+
+<p>Already have an account? <a href="/login">Login</a></p>
 
 </div>
 

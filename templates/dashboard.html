@@ -4,11 +4,17 @@
 
 <div class="form-box">
 
+<h2>Inventory Prediction</h2>
+
+{% if error %}
+<p style="color:red; text-align:center;">{{ error }}</p>
+{% endif %}
+
 <form method="POST" action="/predict">
 
-<input type="number" name="stock" placeholder="Enter Current Stock">
+<input type="number" name="stock" placeholder="Enter Current Stock" required>
 
-<button>Predict</button>
+<button type="submit">Predict</button>
 
 </form>
 

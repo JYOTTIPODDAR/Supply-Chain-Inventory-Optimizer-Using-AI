@@ -7,8 +7,12 @@ app.secret_key = "inventory_secret_key"
 
 
 # LOAD MODEL
-with open("model/demand_model.pkl", "rb") as f:
-    model = pickle.load(f)
+try:
+    with open("model/demand_model.pkl", "rb") as f:
+        model = pickle.load(f)
+except Exception as e:
+    print("Model loading error:", e)
+    model = None
 
 
 # DATABASE CONNECTION
@@ -25,50 +29,61 @@ def home():
 
 
 # REGISTER
-@app.route("/register", methods=["GET","POST"])
+@app.route("/register", methods=["GET", "POST"])
 def register():
 
     if request.method == "POST":
 
-        name = request.form["name"]
-        email = request.form["email"]
-        password = request.form["password"]
+        name = request.form.get("name")
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        # empty input validation
+        if not name or not email or not password:
+            return render_template("register.html", error="All fields are required")
 
         conn = get_db()
 
-        conn.execute(
-            "INSERT INTO users(name,email,password) VALUES (?,?,?)",
-            (name,email,password)
-        )
+        try:
+            conn.execute(
+                "INSERT INTO users(name,email,password) VALUES (?,?,?)",
+                (name, email, password)
+            )
+            conn.commit()
 
-        conn.commit()
+        except sqlite3.IntegrityError:
+            return render_template("register.html", error="Email already registered")
 
-        return redirect("/login")
+        return render_template("login.html", success="Account created successfully. Please login.")
 
     return render_template("register.html")
 
 
 # LOGIN
-@app.route("/login", methods=["GET","POST"])
+@app.route("/login", methods=["GET", "POST"])
 def login():
 
     if request.method == "POST":
 
-        email = request.form["email"]
-        password = request.form["password"]
+        email = request.form.get("email")
+        password = request.form.get("password")
+
+        if not email or not password:
+            return render_template("login.html", error="Please enter email and password")
 
         conn = get_db()
 
         user = conn.execute(
             "SELECT * FROM users WHERE email=? AND password=?",
-            (email,password)
+            (email, password)
         ).fetchone()
 
-        if user:
+        if not user:
+            return render_template("login.html", error="Invalid email or password")
 
-            session["user_id"] = user["id"]
+        session["user_id"] = user["id"]
 
-            return redirect("/dashboard")
+        return redirect("/dashboard")
 
     return render_template("login.html")
 
@@ -90,26 +105,58 @@ def dashboard():
 @app.route("/predict", methods=["POST"])
 def predict():
 
-    current_stock = int(request.form["stock"])
+    if "user_id" not in session:
+        return redirect("/login")
 
-    base_features = [
-        current_stock,
-        60,
-        55.0,
-        120.0,
-        10,
-        1,
-        115.0,
-        15,
-        6,
-        2024
-    ]
+    stock = request.form.get("stock")
 
-    remaining = [0]*(model.n_features_in_ - len(base_features))
+    # empty stock validation
+    if not stock:
+        return render_template("dashboard.html",
+                               error="Please enter stock value",
+                               demand="--",
+                               stock="--",
+                               reorder="--")
 
-    final_input = base_features + remaining
+    # invalid number validation
+    try:
+        current_stock = int(stock)
+    except ValueError:
+        return render_template("dashboard.html",
+                               error="Stock must be a number",
+                               demand="--",
+                               stock="--",
+                               reorder="--")
 
-    prediction = model.predict([final_input])[0]
+    # prediction
+    try:
+
+        base_features = [
+            current_stock,
+            60,
+            55.0,
+            120.0,
+            10,
+            1,
+            115.0,
+            15,
+            6,
+            2024
+        ]
+
+        remaining = [0]*(model.n_features_in_ - len(base_features))
+
+        final_input = base_features + remaining
+
+        prediction = model.predict([final_input])[0]
+
+    except Exception as e:
+
+        return render_template("dashboard.html",
+                               error="Prediction failed",
+                               demand="--",
+                               stock=current_stock,
+                               reorder="Error")
 
     reorder_point = 600
 
