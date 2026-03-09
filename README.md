@@ -232,4 +232,6 @@ https://github.com/JYOTTIPODDAR
 GitHub 2:
 https://github.com/AryanKumar001alt
 
-Deployed Link :- https://supply-chain-inventory-optimizer-using.onrender.com/login
+Deployed Link :- https://supply-chain-inventory-optimizer-using.onrender.com/login 
+
+Note :- Deployed project not working properly in login system . We are working on it now so please check and evaluate on localhost . 
