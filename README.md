@@ -1,4 +1,4 @@
-📦 AI Supply Chain Inventory Optimizer
+Project :- AI Supply Chain Inventory Optimizer
 
 An AI-powered Supply Chain Inventory Optimization System that predicts product demand and helps businesses make smarter inventory decisions.
 
@@ -99,28 +99,35 @@ Supply-Chain-Inventory-Optimizer-Using-AI
 ├── create_db.py
 ├── requirements.txt
 └── README.md
-⚙️ Installation & Setup
+
+
+                             // Installation & Setup //
 1️⃣ Clone the Repository
+
 git clone https://github.com/JYOTTIPODDAR/Supply-Chain-Inventory-Optimizer-Using-AI.git
 cd Supply-Chain-Inventory-Optimizer-Using-AI
+
 2️⃣ Create Virtual Environment
 python -m venv venv
 
 Activate:
-
-Windows
-
 venv\Scripts\activate
+
 3️⃣ Install Dependencies
 pip install -r requirements.txt
+
 4️⃣ Create Database
 python create_db.py
+
 5️⃣ Run the Application
 python app.py
 
 Open browser:
 
 http://127.0.0.1:5000
+
+
+
 📊 How the System Works
 
 1️⃣ User logs into the system
@@ -164,7 +171,9 @@ Predicted Future Demand
 The trained model is saved as:
 
 model/demand_model.pkl
-🔐 Authentication System
+
+
+                     //Authentication System//
 
 The system includes user authentication:
 
@@ -176,7 +185,7 @@ Session Management
 
 Secure Dashboard Access
 
-🎨 UI Dashboard
+                        //UI Dashboard//
 
 The system provides an interactive dashboard displaying:
 
@@ -194,7 +203,7 @@ Future improvements include:
 
 📈 Forecast visualization
 
-📌 Future Improvements
+                               // Future Improvements//
 
 Add Chart.js analytics dashboard
 
@@ -204,13 +213,18 @@ Add supplier recommendation system
 
 Deploy on cloud platforms (AWS / Render / Azure)
 
+
+
 👩‍💻 Author
 
-Jyoti kumari
+Jyoti kumari And
 Aryan kumar
 
 B.Tech Computer Science (AI & ML)
 Aspiring AI Engineer
 
-GitHub:
+GitHub 1:
 https://github.com/JYOTTIPODDAR
+
+GitHub 1:
+https://github.com/AryanKumar001alt

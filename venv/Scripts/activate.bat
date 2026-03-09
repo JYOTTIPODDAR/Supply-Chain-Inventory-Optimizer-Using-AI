@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set "VIRTUAL_ENV=C:\Users\jpodd\OneDrive\PROJECTS\Supply_Chain_Inventory_Optimizer\venv"
+set "VIRTUAL_ENV=C:\Users\ARYAN\Desktop\MiniProject\Supply-Chain-Inventory-Optimizer-Using-AI\venv"
 
 if not defined PROMPT set PROMPT=$P$G
 
