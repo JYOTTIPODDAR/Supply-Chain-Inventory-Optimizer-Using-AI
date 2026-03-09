@@ -1,3 +1,4 @@
+import os
 import pickle
 import sqlite3
 from flask import Flask, render_template, request, redirect, session
@@ -95,10 +96,12 @@ def dashboard():
     if "user_id" not in session:
         return redirect("/login")
 
-    return render_template("dashboard.html",
-                           demand="--",
-                           stock="--",
-                           reorder="--")
+    return render_template(
+        "dashboard.html",
+        demand="--",
+        stock="--",
+        reorder="--"
+    )
 
 
 # INVENTORY CHECK
@@ -112,21 +115,25 @@ def predict():
 
     # empty stock validation
     if not stock:
-        return render_template("dashboard.html",
-                               error="Please enter stock value",
-                               demand="--",
-                               stock="--",
-                               reorder="--")
+        return render_template(
+            "dashboard.html",
+            error="Please enter stock value",
+            demand="--",
+            stock="--",
+            reorder="--"
+        )
 
     # invalid number validation
     try:
         current_stock = int(stock)
     except ValueError:
-        return render_template("dashboard.html",
-                               error="Stock must be a number",
-                               demand="--",
-                               stock="--",
-                               reorder="--")
+        return render_template(
+            "dashboard.html",
+            error="Stock must be a number",
+            demand="--",
+            stock="--",
+            reorder="--"
+        )
 
     # prediction
     try:
@@ -144,7 +151,7 @@ def predict():
             2024
         ]
 
-        remaining = [0]*(model.n_features_in_ - len(base_features))
+        remaining = [0] * (model.n_features_in_ - len(base_features))
 
         final_input = base_features + remaining
 
@@ -152,20 +159,25 @@ def predict():
 
     except Exception as e:
 
-        return render_template("dashboard.html",
-                               error="Prediction failed",
-                               demand="--",
-                               stock=current_stock,
-                               reorder="Error")
+        print("Prediction error:", e)
+
+        return render_template(
+            "dashboard.html",
+            error="Prediction failed",
+            demand="--",
+            stock=current_stock,
+            reorder="Error"
+        )
 
     reorder_point = 600
-
     reorder = "YES" if current_stock < reorder_point else "NO"
 
-    return render_template("dashboard.html",
-                           demand=round(prediction,2),
-                           stock=current_stock,
-                           reorder=reorder)
+    return render_template(
+        "dashboard.html",
+        demand=round(prediction, 2),
+        stock=current_stock,
+        reorder=reorder
+    )
 
 
 # LOGOUT
@@ -175,5 +187,9 @@ def logout():
     return redirect("/login")
 
 
+# IMPORTANT FOR RENDER DEPLOYMENT
 if __name__ == "__main__":
-    app.run(debug=True)
+
+    port = int(os.environ.get("PORT", 5000))
+
+    app.run(host="0.0.0.0", port=port)
