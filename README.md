@@ -131,8 +131,11 @@ http://127.0.0.1:5000
 📊 How the System Works
 
 1️⃣ User logs into the system
+
 2️⃣ User enters current inventory stock
+
 3️⃣ Machine Learning model predicts future demand
+
 4️⃣ System compares:
 
 Current Stock
@@ -226,5 +229,7 @@ Aspiring AI Engineer
 GitHub 1:
 https://github.com/JYOTTIPODDAR
 
-GitHub 1:
+GitHub 2:
 https://github.com/AryanKumar001alt
+
+Deployed Link :- https://supply-chain-inventory-optimizer-using.onrender.com/login
