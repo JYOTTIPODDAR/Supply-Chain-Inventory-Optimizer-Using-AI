@@ -2,6 +2,8 @@ from flask import Flask, render_template, request, redirect
 from models import db, User
 from optimizer.inventory_logic import analyze_inventory
 
+import os
+
 app = Flask(__name__)
 
 # DATABASE CONFIG
@@ -125,7 +127,7 @@ def analyze():
     return redirect("/dashboard")
 
 
-# PRODUCT STATUS CHECK FEATURE (NEW)
+# PRODUCT STATUS CHECK FEATURE
 @app.route("/check_product", methods=["POST"])
 def check_product():
 
@@ -196,7 +198,7 @@ def products():
     )
 
 
-# VISUAL PAGE
+# VISUAL ANALYTICS PAGE
 @app.route("/visuals")
 def visuals():
 
@@ -211,7 +213,6 @@ def visuals():
             categories=None
         )
 
-    # category-wise count
     category_data = (
         inventory_df["category"]
         .value_counts()
@@ -223,11 +224,40 @@ def visuals():
         stats=stats,
         categories=category_data
     )
-# SETTINGS PAGE
-@app.route("/settings")
+
+
+# SETTINGS PAGE (FULLY WORKING)
+@app.route("/settings", methods=["GET", "POST"])
 def settings():
 
-    return render_template("settings.html")
+    user = User.query.first()
+
+    if request.method == "POST":
+
+        user.low_stock_threshold = request.form.get(
+            "low_stock_threshold"
+        )
+
+        user.reorder_quantity = request.form.get(
+            "reorder_quantity"
+        )
+
+        user.email_alerts = (
+            "email_alerts" in request.form
+        )
+
+        user.auto_reorder = (
+            "auto_reorder" in request.form
+        )
+
+        db.session.commit()
+
+        return redirect("/settings")
+
+    return render_template(
+        "settings.html",
+        user=user
+    )
 
 
 # LOGOUT
@@ -237,14 +267,14 @@ def logout():
     return redirect("/")
 
 
-# RUN APP
+# RUN APP (Render compatible)
 if __name__ == "__main__":
 
     with app.app_context():
 
         db.create_all()
 
-    import os
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+    app.run(
+        host="0.0.0.0",
+        port=int(os.environ.get("PORT", 5000))
+    )

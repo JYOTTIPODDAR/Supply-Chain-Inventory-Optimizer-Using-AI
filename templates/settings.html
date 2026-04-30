@@ -2,8 +2,174 @@
 
 {% block content %}
 
-<h2>Settings</h2>
+<div class="container mt-4">
 
-<p>Profile settings coming soon</p>
+    <h2 class="mb-4">Settings</h2>
+
+    <form method="POST">
+
+        <div class="row">
+
+            <!-- PROFILE SETTINGS CARD -->
+            <div class="col-md-6 mb-4">
+
+                <div class="card shadow-sm p-4">
+
+                    <h5>Profile Information</h5>
+
+                    <label class="mt-2">Username</label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        value="{{ user.username }}"
+                        disabled
+                    >
+
+                    <label class="mt-3">Email</label>
+
+                    <input
+                        type="text"
+                        class="form-control"
+                        value="{{ user.email }}"
+                        disabled
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- PASSWORD SETTINGS CARD -->
+            <div class="col-md-6 mb-4">
+
+                <div class="card shadow-sm p-4">
+
+                    <h5>Change Password</h5>
+
+                    <input
+                        type="password"
+                        class="form-control mt-2"
+                        placeholder="Coming Soon"
+                        disabled
+                    >
+
+                    <button
+                        class="btn btn-secondary mt-3"
+                        disabled
+                    >
+                        Update Password
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <!-- INVENTORY SETTINGS CARD -->
+            <div class="col-md-6 mb-4">
+
+                <div class="card shadow-sm p-4">
+
+                    <h5>Inventory Preferences</h5>
+
+                    <label class="mt-2">
+                        Low Stock Threshold
+                    </label>
+
+                    <input
+                        type="number"
+                        name="low_stock_threshold"
+                        class="form-control"
+                        value="{{ user.low_stock_threshold }}"
+                    >
+
+                    <label class="mt-3">
+                        Default Reorder Quantity
+                    </label>
+
+                    <input
+                        type="number"
+                        name="reorder_quantity"
+                        class="form-control"
+                        value="{{ user.reorder_quantity }}"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <!-- NOTIFICATION SETTINGS CARD -->
+            <div class="col-md-6 mb-4">
+
+                <div class="card shadow-sm p-4">
+
+                    <h5>Notification Settings</h5>
+
+                    <div class="form-check form-switch mt-3">
+
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="email_alerts"
+                            {% if user.email_alerts %}
+                            checked
+                            {% endif %}
+                        >
+
+                        <label class="form-check-label">
+
+                            Enable Email Alerts
+
+                        </label>
+
+                    </div>
+
+
+                    <div class="form-check form-switch mt-3">
+
+                        <input
+                            class="form-check-input"
+                            type="checkbox"
+                            name="auto_reorder"
+                            {% if user.auto_reorder %}
+                            checked
+                            {% endif %}
+                        >
+
+                        <label class="form-check-label">
+
+                            Enable Auto Reorder Suggestions
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- SAVE BUTTON -->
+
+        <div class="text-center">
+
+            <button
+                type="submit"
+                class="btn btn-primary px-5"
+            >
+
+                Save Settings
+
+            </button>
+
+        </div>
+
+    </form>
+
+</div>
 
 {% endblock %}
