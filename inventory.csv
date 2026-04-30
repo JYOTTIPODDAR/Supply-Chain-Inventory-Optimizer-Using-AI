@@ -1,0 +1,16 @@
+Product_ID,Product_Name,Category,Stock_Quantity,Reorder_Level,Lead_Time_Days,Supplier,Unit_Price,Last_Restock_Date
+P101,Laptop,Electronics,25,15,7,Supplier_A,55000,2026-02-10
+P102,Mouse,Electronics,120,50,5,Supplier_B,500,2026-02-15
+P103,Keyboard,Electronics,80,40,6,Supplier_B,1200,2026-02-18
+P104,Monitor,Electronics,10,12,8,Supplier_C,12000,2026-02-12
+P105,Printer,Electronics,5,8,10,Supplier_D,15000,2026-02-01
+P106,Notebook,Stationery,200,100,4,Supplier_E,50,2026-02-20
+P107,Pen Pack,Stationery,300,150,3,Supplier_E,120,2026-02-22
+P108,Office Chair,Furniture,12,10,12,Supplier_F,7000,2026-01-28
+P109,Desk,Furniture,6,8,14,Supplier_F,15000,2026-01-25
+P110,Router,Electronics,18,15,6,Supplier_G,2500,2026-02-11
+P111,USB Cable,Electronics,250,120,5,Supplier_B,150,2026-02-16
+P112,Projector,Electronics,4,5,15,Supplier_H,45000,2026-01-30
+P113,Whiteboard,Office Supplies,14,10,7,Supplier_I,3500,2026-02-05
+P114,Marker Set,Office Supplies,90,40,4,Supplier_I,300,2026-02-19
+P115,Stapler,Office Supplies,60,25,5,Supplier_I,250,2026-02-17

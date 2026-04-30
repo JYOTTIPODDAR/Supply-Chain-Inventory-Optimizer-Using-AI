@@ -1,0 +1,154 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>Visual Analytics</h2>
+
+{% if stats %}
+
+<canvas id="stockChart"></canvas>
+
+<br><br>
+
+<canvas id="categoryChart"></canvas>
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const stockData = {
+
+labels: [
+
+"Total Products",
+
+"Low Stock",
+
+"Overstock",
+
+"Supplier Delay"
+
+],
+
+datasets: [{
+
+label: "Inventory Status",
+
+data: [
+
+{{ stats.total }},
+
+{{ stats.low_stock }},
+
+{{ stats.overstock }},
+
+{{ stats.supplier_delay }}
+
+],
+
+backgroundColor: [
+
+"#0d6efd",
+
+"#dc3545",
+
+"#ffc107",
+
+"#17a2b8"
+
+]
+
+}]
+
+};
+
+
+new Chart(
+
+document.getElementById("stockChart"),
+
+{
+
+type: "bar",
+
+data: stockData
+
+}
+
+);
+
+
+// CATEGORY PIE CHART
+
+const categoryLabels = [
+
+{% for key in categories.keys() %}
+
+"{{ key }}",
+
+{% endfor %}
+
+];
+
+
+const categoryValues = [
+
+{% for value in categories.values() %}
+
+{{ value }},
+
+{% endfor %}
+
+];
+
+
+new Chart(
+
+document.getElementById("categoryChart"),
+
+{
+
+type: "pie",
+
+data: {
+
+labels: categoryLabels,
+
+datasets: [{
+
+data: categoryValues,
+
+backgroundColor: [
+
+"#0d6efd",
+
+"#6f42c1",
+
+"#198754",
+
+"#fd7e14",
+
+"#20c997",
+
+"#ffc107"
+
+]
+
+}]
+
+}
+
+}
+
+);
+
+</script>
+
+{% else %}
+
+<h5>Upload dataset first to see charts.</h5>
+
+{% endif %}
+
+{% endblock %}

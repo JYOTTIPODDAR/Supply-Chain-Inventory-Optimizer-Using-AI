@@ -1,0 +1,51 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>Products Table</h2>
+
+<table class="table table-dark table-striped">
+
+<thead>
+
+<tr>
+
+<th>Product</th>
+
+<th>Stock</th>
+
+<th>Category</th>
+
+<th>Supplier</th>
+
+<th>Price</th>
+
+</tr>
+
+</thead>
+
+<tbody>
+
+{% for item in products %}
+
+<tr>
+
+<td>{{ item.product_name }}</td>
+
+<td>{{ item.stock_quantity }}</td>
+
+<td>{{ item.category }}</td>
+
+<td>{{ item.supplier }}</td>
+
+<td>{{ item.unit_price }}</td>
+
+</tr>
+
+{% endfor %}
+
+</tbody>
+
+</table>
+
+{% endblock %}

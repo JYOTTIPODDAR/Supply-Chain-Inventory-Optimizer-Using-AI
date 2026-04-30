@@ -1,0 +1,93 @@
+/* ================= BODY ================= */
+
+body {
+
+background: linear-gradient(135deg,#020617,#0f172a);
+
+color: white;
+
+}
+
+
+/* ================= DASHBOARD CONTAINER ================= */
+
+.dashboard-dark {
+
+background: transparent;
+
+}
+
+
+/* ================= DARK CARDS ================= */
+
+.dark-card {
+
+background: #111827 !important;
+
+color: white !important;
+
+border: 1px solid #1e3a8a;
+
+}
+
+
+/* ================= INPUTS ================= */
+
+.form-control {
+
+background: #020617 !important;
+
+color: white !important;
+
+border: 1px solid #1e3a8a !important;
+
+}
+
+
+/* ================= TEXTAREA ================= */
+
+textarea {
+
+background: #020617 !important;
+
+color: white !important;
+
+}
+
+
+/* ================= BUTTONS ================= */
+
+.btn-primary {
+
+background: linear-gradient(135deg,#2563eb,#1d4ed8) !important;
+
+border: none !important;
+
+}
+
+
+.btn-success {
+
+background: linear-gradient(135deg,#2563eb,#1e40af) !important;
+
+border: none !important;
+
+}
+
+
+/* ================= CARD TITLE COLOR ================= */
+
+.card h5 {
+
+color: #93c5fd;
+
+}
+
+
+/* ================= MAIN HEADING ================= */
+
+h2 {
+
+color: #60a5fa;
+
+}

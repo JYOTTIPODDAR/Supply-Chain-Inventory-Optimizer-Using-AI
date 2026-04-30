@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+<h2>AI Supply Chain Inventory Optimizer</h2>
+
+<div class="row">
+
+<div class="col-md-3">
+<div class="card bg-dark text-white p-3">
+Total Products
+<h3>{{ stats.total }}</h3>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card bg-danger text-white p-3">
+Low Stock Items
+<h3>{{ stats.low_stock }}</h3>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card bg-warning text-white p-3">
+Overstock Items
+<h3>{{ stats.overstock }}</h3>
+</div>
+</div>
+
+<div class="col-md-3">
+<div class="card bg-info text-white p-3">
+Supplier Delay Alerts
+<h3>{{ stats.supplier_delay }}</h3>
+</div>
+</div>
+
+</div>
+
+<hr>
+
+<h4>Upload Inventory Dataset</h4>
+
+<form action="/analyze" method="POST" enctype="multipart/form-data">
+
+<input type="file" name="file" required>
+
+<br><br>
+
+<button class="btn btn-primary">
+
+Analyze Inventory
+
+</button>
+
+</form>
+
+<hr>
+
+<h4>Check Product Status</h4>
+
+<form action="/check_product" method="POST">
+
+<input
+type="text"
+name="product_name"
+placeholder="Enter product name"
+required
+class="form-control"
+>
+
+<br>
+
+<button class="btn btn-success">
+
+Check Product Status
+
+</button>
+
+</form>
+
+{% if result %}
+
+<div class="alert alert-info mt-3">
+
+{{ result }}
+
+</div>
+
+{% endif %}
+
+{% endblock %}
